@@ -29,7 +29,7 @@ function btnClick(){
         alert('Phone number can only contain numbers');
         btn = false;
     }
-    else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(emailField)) {
+    else if (!/^([a-zA-Z0-9\._]+)@([a-zA-Z0-9]+).([a-z]+).([a-z]+)?$/.test(emailField)) {
         alert('Please enter a valid email address');
         btn = false;
     }
