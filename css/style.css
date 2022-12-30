@@ -129,7 +129,8 @@ nav.w3-navbar {
 
 
 .w3l-banner {
-    background: url(../images/IMG_20221228_225633-min-min.jpg) no-repeat 0px 0px;
+    /* background: url(../images/IMG_20221228_225633-min-min.jpg) no-repeat 0px 0px; */
+	background: url(../images/IMG_20221228_225633-min-min.jpg) top right no-repeat;
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;
