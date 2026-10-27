@@ -22,7 +22,7 @@ import { monogramStrokes } from "@/components/brand/monogram";
 
 const SAMPLE_SIZE = 256;
 const SAMPLE_STEP = 2.1;
-const DUST_COUNT = 520;
+const DUST_COUNT = 900;
 const CAMERA_Z = 4;
 const FOV = 35;
 const INTRO_SECONDS = 2.4;
@@ -32,6 +32,7 @@ const vertexShader = /* glsl */ `
   uniform float uIntro;
   uniform float uScatter;
   uniform float uSize;
+  uniform float uCameraZ;
   uniform float uPixelRatio;
   uniform float uMotion;
   uniform vec2 uPointer;
@@ -73,7 +74,7 @@ const vertexShader = /* glsl */ `
     vec4 mvPosition = modelViewMatrix * vec4(p, 1.0);
     gl_Position = projectionMatrix * mvPosition;
     float size = uSize * (0.65 + aSeed.y * 0.7) * mix(1.0, 0.55, aDust);
-    gl_PointSize = size * uPixelRatio * (${CAMERA_Z.toFixed(1)} / -mvPosition.z);
+    gl_PointSize = size * uPixelRatio * (uCameraZ / -mvPosition.z);
 
     vAccent = aAccent;
     vAlpha = mix(1.0, 0.4, aDust) * (1.0 - uScatter) * smoothstep(0.0, 0.35, t + aDust * 0.5);
@@ -143,6 +144,12 @@ export type MonogramFieldOptions = {
   accent: string;
   /** Static, fully formed mark with no drift, intro or pointer response. */
   reducedMotion: boolean;
+  /**
+   * How much larger the canvas is than the box the mark should fill. The
+   * extra margin gives drifting dust and pushed particles room to move
+   * instead of being clipped at the canvas edge.
+   */
+  bleed?: number;
 };
 
 export type MonogramField = {
@@ -155,7 +162,7 @@ export type MonogramField = {
 
 export function createMonogramField(
   canvas: HTMLCanvasElement,
-  { color, accent, reducedMotion }: MonogramFieldOptions,
+  { color, accent, reducedMotion, bleed = 1 }: MonogramFieldOptions,
 ): MonogramField {
   const renderer = new WebGLRenderer({ canvas, alpha: true, antialias: false });
   renderer.setClearColor(0x000000, 0);
@@ -164,7 +171,9 @@ export function createMonogramField(
 
   const scene = new Scene();
   const camera = new PerspectiveCamera(FOV, 1, 0.1, 20);
-  camera.position.z = CAMERA_Z;
+  // Pulling the camera back by the bleed keeps the mark the same on-screen size.
+  const cameraZ = CAMERA_Z * bleed;
+  camera.position.z = cameraZ;
 
   const samples = sampleMonogram();
   const count = samples.length + DUST_COUNT;
@@ -179,7 +188,8 @@ export function createMonogramField(
   });
   for (let i = samples.length; i < count; i++) {
     const angle = Math.random() * Math.PI * 2;
-    const radius = 0.9 + Math.random() * 1.1;
+    // Dust reaches past the mark into the bleed, where the canvas mask fades it out.
+    const radius = 0.9 + Math.random() * 1.9;
     positions.set(
       [Math.cos(angle) * radius * 1.2, Math.sin(angle) * radius, (Math.random() - 0.5) * 1.2],
       i * 3,
@@ -200,6 +210,7 @@ export function createMonogramField(
     uIntro: { value: reducedMotion ? 1 : 0 },
     uScatter: { value: 0 },
     uSize: { value: 3.2 },
+    uCameraZ: { value: cameraZ },
     uPixelRatio: { value: pixelRatio },
     uMotion: { value: reducedMotion ? 0 : 1 },
     uPointer: { value: [10, 10] as [number, number] },
@@ -220,7 +231,7 @@ export function createMonogramField(
   const points = new Points(geometry, material);
   scene.add(points);
 
-  let halfHeight = Math.tan(((FOV / 2) * Math.PI) / 180) * CAMERA_Z;
+  let halfHeight = Math.tan(((FOV / 2) * Math.PI) / 180) * cameraZ;
   let halfWidth = halfHeight;
   const resize = () => {
     const { clientWidth, clientHeight } = canvas;
@@ -228,10 +239,10 @@ export function createMonogramField(
     renderer.setSize(clientWidth, clientHeight, false);
     camera.aspect = clientWidth / clientHeight;
     camera.updateProjectionMatrix();
-    halfHeight = Math.tan(((FOV / 2) * Math.PI) / 180) * CAMERA_Z;
+    halfHeight = Math.tan(((FOV / 2) * Math.PI) / 180) * cameraZ;
     halfWidth = halfHeight * camera.aspect;
     // Keep the mark a similar size in narrow frames.
-    uniforms.uSize.value = 3.2 * Math.min(1, clientWidth / 520) + 1;
+    uniforms.uSize.value = 3.2 * Math.min(1, clientWidth / bleed / 520) + 1;
     render();
   };
 
@@ -243,7 +254,7 @@ export function createMonogramField(
     const ny = -(((event.clientY - rect.top) / rect.height) * 2 - 1);
     target.x = nx * halfWidth;
     target.y = ny * halfHeight;
-    const near = Math.abs(nx) < 1.3 && Math.abs(ny) < 1.3;
+    const near = Math.abs(nx) < 1 && Math.abs(ny) < 1;
     target.strength = near ? 1 : 0;
     target.tiltX = Math.max(-1, Math.min(1, nx));
     target.tiltY = Math.max(-1, Math.min(1, ny));

@@ -8,6 +8,17 @@ import { useDeferredScene } from "@/hooks/use-deferred-scene";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { cn } from "@/lib/utils";
 
+/**
+ * The canvas is this many times the size of the mark's box and centred on it,
+ * so particles can drift and scatter past the mark without hitting an edge.
+ */
+const BLEED = 1.7;
+const BLEED_OFFSET = `${(-(BLEED - 1) / 2) * 100}%`;
+const BLEED_SIZE = `${BLEED * 100}%`;
+
+// Fades the canvas out towards its edges so there is no visible boundary.
+const EDGE_FADE = "radial-gradient(closest-side, #000 66%, transparent 100%)";
+
 function readColors(element: Element): [string, string] {
   const style = getComputedStyle(element);
   return [
@@ -43,7 +54,12 @@ export function HeroMark({ className }: { className?: string }) {
       .then(({ createMonogramField }) => {
         if (cancelled) return;
         const [color, accent] = readColors(wrapper);
-        const field = createMonogramField(canvas, { color, accent, reducedMotion: reduced });
+        const field = createMonogramField(canvas, {
+          color,
+          accent,
+          reducedMotion: reduced,
+          bleed: BLEED,
+        });
         fieldRef.current = field;
 
         themeObserver = new MutationObserver(() => field.setColors(...readColors(wrapper)));
@@ -96,10 +112,20 @@ export function HeroMark({ className }: { className?: string }) {
           ready && "opacity-0",
         )}
       />
+      {/* Larger than its box and click-through, so it can overlap nearby content. */}
       <canvas
         ref={canvasRef}
+        style={{
+          // A canvas does not stretch between inset edges, so size it explicitly.
+          top: BLEED_OFFSET,
+          left: BLEED_OFFSET,
+          width: BLEED_SIZE,
+          height: BLEED_SIZE,
+          maskImage: EDGE_FADE,
+          WebkitMaskImage: EDGE_FADE,
+        }}
         className={cn(
-          "absolute inset-0 h-full w-full transition-opacity duration-1000",
+          "pointer-events-none absolute max-w-none transition-opacity duration-1000",
           ready ? "opacity-100" : "opacity-0",
         )}
       />
