@@ -23,6 +23,8 @@ import {
 
 import type { StaticImageData } from "next/image";
 
+import type { LoopVideoSource } from "@/components/ui/loop-video";
+
 export const platforms = ["Next.js", "React", "Webflow", "Three.js", "Other"] as const;
 export type Platform = (typeof platforms)[number];
 
@@ -40,9 +42,11 @@ export type CaseStudy = {
   stack: string[];
   links: ExternalLink[];
   cover: StaticImageData;
+  /** Screen recording shown in place of the cover still. */
+  video?: LoopVideoSource;
   /** Backdrop colour for the framed cover. */
   tint: string;
-  gallery: { image: StaticImageData; caption: string }[];
+  gallery: { image: StaticImageData; caption: string; video?: LoopVideoSource }[];
   overview: string[];
   highlights: string[];
 };
@@ -58,6 +62,11 @@ export type ArchiveProject = {
   /** True when the link points at source code rather than a live site. */
   source?: boolean;
 };
+
+/** A screen recording in /public/videos with a poster of its first frame (all are 1280×662). */
+function clip(name: string): LoopVideoSource {
+  return { src: `/videos/${name}.mp4`, poster: `/videos/${name}.webp`, width: 1280, height: 662 };
+}
 
 export const caseStudies: CaseStudy[] = [
   {
@@ -75,11 +84,20 @@ export const caseStudies: CaseStudy[] = [
       { label: "Family Delivery", href: "https://subscribe.family.ikea.qa/en" },
     ],
     cover: sfm,
+    video: clip("ikea-food"),
     tint: "#0058a3",
     gallery: [
       { image: sfm, caption: "Swedish Food Market, a progressive web app for ordering IKEA food" },
-      { image: giftcards, caption: "Gift card store for the UAE, Qatar, Oman and Egypt" },
-      { image: familysub, caption: "Family Delivery subscription for Qatar and the UAE" },
+      {
+        image: giftcards,
+        caption: "Gift card store for the UAE, Qatar, Oman and Egypt",
+        video: clip("ikea-giftcards"),
+      },
+      {
+        image: familysub,
+        caption: "Family Delivery subscription for Qatar and the UAE",
+        video: clip("ikea-family"),
+      },
     ],
     overview: [
       "Swedish Food Market brings IKEA's food range to customers' doors across the UAE, Qatar, Oman and Egypt. It is a progressive web app where customers browse and order authentic IKEA food for delivery, built to feel smooth on any device.",
@@ -102,6 +120,7 @@ export const caseStudies: CaseStudy[] = [
     stack: ["Next.js", "Sanity", "TypeScript"],
     links: [{ label: "mazaintrading.com", href: "https://www.mazaintrading.com/" }],
     cover: mazaintrading,
+    video: clip("mazain-sohar"),
     tint: "#e9a23b",
     gallery: [{ image: mazaintrading, caption: "Home page for Mazain Sohar's industrial supply" }],
     overview: [
@@ -125,6 +144,7 @@ export const caseStudies: CaseStudy[] = [
     stack: ["Webflow", "JavaScript", "Webflow CMS"],
     links: [{ label: "theblockchaincenter.ae", href: "https://www.theblockchaincenter.ae/" }],
     cover: blockchaincenter,
+    video: clip("blockchain-center"),
     tint: "#c9c2f5",
     gallery: [{ image: blockchaincenter, caption: "The Blockchain Center home page" }],
     overview: [
@@ -148,6 +168,7 @@ export const caseStudies: CaseStudy[] = [
     stack: ["Webflow", "Spline", "JavaScript"],
     links: [{ label: "goodseoul.com", href: "https://goodseoul.com" }],
     cover: goodseoul,
+    video: clip("good-seoul"),
     tint: "#f4d35e",
     gallery: [{ image: goodseoul, caption: "Good Seoul home page" }],
     overview: [

@@ -11,6 +11,7 @@ type PortraitProps = {
 
 /**
  * A 4:5 portrait that sits in black and white and warms to colour on hover.
+ * Touch screens cannot hover, so they get the colour photo straight away.
  * Until a photo is supplied it renders a framed placeholder with the
  * monogram, sized exactly like the real thing so the layout does not shift
  * when the photo arrives.
@@ -27,7 +28,7 @@ export function Portrait({ image, alt, className }: PortraitProps) {
           fill
           sizes="(min-width: 1024px) 30vw, 90vw"
           placeholder="blur"
-          className="object-cover grayscale transition-[filter,scale] duration-1000 ease-out-expo group-hover:scale-[1.02] group-hover:grayscale-0"
+          className="object-cover transition-[filter,scale] duration-1000 ease-out-expo group-hover:scale-[1.02] pointer-fine:grayscale pointer-fine:group-hover:grayscale-0"
         />
       ) : (
         <div

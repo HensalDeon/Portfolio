@@ -1,5 +1,7 @@
 import type { StaticImageData } from "next/image";
 
+import { portrait } from "@/assets";
+
 export const site = {
   name: "Hensal Deon",
   firstName: "Hensal",
@@ -21,7 +23,7 @@ export const site = {
    * Photo for the About section, imported from `@/assets` (4:5 crop works
    * best). A framed placeholder holds the space while this is unset.
    */
-  portrait: undefined as StaticImageData | undefined,
+  portrait: portrait as StaticImageData | undefined,
   intro:
     "Senior web developer at Eighty Six Media. I build marketing sites and web products with Next.js, Webflow and headless CMS, most recently for IKEA, Mazain Sohar and the Blockchain Center.",
   statement:

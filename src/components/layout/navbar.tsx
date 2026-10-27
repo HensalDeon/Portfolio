@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Monogram } from "@/components/brand/monogram";
+import { MotionToggle } from "@/components/layout/motion-toggle";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { getLenis } from "@/components/providers/smooth-scroll";
 import { LinkButton } from "@/components/ui/button";
@@ -115,6 +116,7 @@ export function Navbar() {
 
           <div className="flex items-center gap-1.5">
             <LocalTime className="mr-3 hidden font-eyebrow text-muted tabular-nums lg:inline" />
+            <MotionToggle />
             <ThemeToggle />
             <div className="hidden md:block">
               <Magnetic strength={0.25}>

@@ -52,6 +52,7 @@ function FeaturedProject({ study, index }: { study: CaseStudy; index: number }) 
             <ViewTransition name={`cover-${study.slug}`} share="morph" default="none">
               <ProjectCover
                 image={study.cover}
+                video={study.video}
                 alt={`${study.client} website`}
                 tint={study.tint}
                 sizes="(min-width: 1024px) 56vw, 90vw"

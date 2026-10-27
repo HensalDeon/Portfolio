@@ -203,6 +203,11 @@
   animation-play-state: paused;
 }
 
+/* The header's pause toggle stops the ticker in place. */
+[data-motion-paused] .marquee-track {
+  animation-play-state: paused;
+}
+
 /*
  * Images unmask from the bottom as they scroll into view. Driven by a CSS
  * scroll timeline rather than an observer, so its state is correct on the very

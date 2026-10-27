@@ -122,6 +122,7 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
             <ViewTransition name={`cover-${study.slug}`} share="morph" default="none">
               <ProjectCover
                 image={study.cover}
+                video={study.video}
                 alt={study.gallery[0]?.caption ?? `${study.client} website`}
                 tint={study.tint}
                 sizes="(min-width: 1440px) 1200px, 90vw"
@@ -173,6 +174,7 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
                 <figure key={item.caption} className="reveal-clip">
                   <ProjectCover
                     image={item.image}
+                    video={item.video}
                     alt={item.caption}
                     tint={study.tint}
                     sizes="(min-width: 640px) 45vw, 90vw"

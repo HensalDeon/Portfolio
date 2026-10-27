@@ -1,3 +1,6 @@
+// About
+import portrait from "./portrait.webp";
+
 // Project screenshots
 import aneco from "./projects/aneco.webp";
 import animemaster from "./projects/animemaster.webp";
@@ -21,6 +24,7 @@ import trsutcapital from "./projects/trsutcapital.webp";
 import wac from "./projects/wac.webp";
 
 export {
+  portrait,
   aneco,
   animemaster,
   blockchaincenter,
