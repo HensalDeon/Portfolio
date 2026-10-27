@@ -1,77 +1,61 @@
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 
-import { HeroScene } from "@/components/three/hero-scene";
+import { HeroMark } from "@/components/hero/hero-mark";
 import { LinkButton } from "@/components/ui/button";
-import { Parallax } from "@/components/ui/parallax";
-import { Container } from "@/components/ui/container";
+import { LocalTime } from "@/components/ui/local-time";
+import { Magnetic } from "@/components/ui/magnetic";
 import { Reveal } from "@/components/ui/reveal";
-import { experiences, projects } from "@/content/data";
 import { site } from "@/content/site";
 
-const headline = [
-  <>
-    Fast, <em className="text-accent">considered</em>
-  </>,
-  "web experiences for",
-  "ambitious brands.",
-];
-
-const stats = [
-  { value: `${projects.length}+`, label: "Projects shipped" },
-  { value: String(experiences.length), label: "Teams worked with" },
-  { value: String(site.since), label: "Building for the web since" },
-];
+const gutter = "px-5 sm:px-8 lg:px-12";
 
 export function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden">
-      <Container className="grid min-h-svh grid-cols-1 items-center gap-12 pt-28 pb-12 lg:grid-cols-12 lg:gap-8 lg:pt-32">
+    <section id="top" className="relative flex min-h-svh flex-col overflow-hidden pt-20 lg:pt-24">
+      <Reveal className={`flex items-center justify-between gap-4 ${gutter}`}>
+        <p className="flex items-center gap-2.5 font-eyebrow">
+          <span
+            className="h-2 w-2 animate-pulse-dot rounded-full bg-accent text-accent motion-reduce:animate-none"
+            aria-hidden
+          />
+          {site.availability}
+        </p>
+        <p className="hidden font-eyebrow text-muted sm:block">
+          {site.location} · <LocalTime className="tabular-nums" />
+        </p>
+      </Reveal>
+
+      <div
+        className={`grid flex-1 items-center gap-10 py-8 lg:grid-cols-12 lg:gap-8 lg:py-4 ${gutter}`}
+      >
         <div className="flex flex-col gap-8 lg:col-span-7">
-          <Reveal>
-            <p className="flex items-center gap-3 font-mono text-xs tracking-[0.2em] text-muted uppercase">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden />
-              {site.role} at {site.company}
+          <Reveal delay={0.1}>
+            <p className="max-w-[18ch] text-[clamp(2.25rem,4.4vw,4.25rem)] leading-[1.02] font-medium tracking-[-0.03em] text-balance">
+              Fast,{" "}
+              <em className="font-serif text-[1.08em] font-normal tracking-[-0.01em] text-accent">
+                memorable
+              </em>{" "}
+              websites for brands around the world.
             </p>
           </Reveal>
 
-          <h1 className="flex flex-col font-serif text-[clamp(3rem,7.5vw,6.5rem)] leading-[0.95] tracking-[-0.02em]">
-            <span className="sr-only">Fast, considered web experiences for ambitious brands.</span>
-            {headline.map((line, index) => (
-              <span
-                key={index}
-                aria-hidden
-                className="-my-[0.15em] block overflow-hidden py-[0.15em]"
-              >
-                <span
-                  className="block animate-line-up motion-reduce:animate-none"
-                  style={{
-                    animationDelay: `calc(var(--intro-delay, 0s) + ${0.1 + index * 0.08}s)`,
-                  }}
-                >
-                  {line}
-                </span>
-              </span>
-            ))}
-          </h1>
-
           <Reveal delay={0.2}>
-            <p className="max-w-xl text-lg leading-relaxed text-muted">{site.intro}</p>
+            <p className="max-w-lg text-base leading-relaxed text-muted sm:text-lg">{site.intro}</p>
           </Reveal>
 
-          <Reveal delay={0.3}>
-            <div className="flex flex-wrap items-center gap-3">
-              <LinkButton href="#projects">
+          <Reveal delay={0.3} className="flex flex-wrap items-center gap-3">
+            <Magnetic>
+              <LinkButton href="#work">
                 Selected work
                 <ArrowDown className="h-4 w-4" aria-hidden />
               </LinkButton>
+            </Magnetic>
+            <Magnetic>
               <LinkButton href="#contact" variant="secondary">
                 Get in touch
               </LinkButton>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.4}>
-            <ul className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs tracking-[0.15em] uppercase">
+            </Magnetic>
+            <ul className="flex gap-5 font-eyebrow sm:ml-2">
               {site.socials.map((social) => (
                 <li key={social.label}>
                   <a
@@ -89,36 +73,50 @@ export function Hero() {
           </Reveal>
         </div>
 
-        <Reveal delay={0.25} className="lg:col-span-5">
-          <Parallax offset="top-exit" range={[0, -64]}>
-            <HeroScene />
-          </Parallax>
-        </Reveal>
-      </Container>
+        <HeroMark className="mx-auto aspect-square w-[72vw] max-w-[20rem] lg:col-span-5 lg:mr-0 lg:w-full lg:max-w-[min(34rem,52svh)]" />
+      </div>
 
-      <Container>
-        <div className="flex flex-col gap-6 border-t border-line py-6 sm:flex-row sm:items-center sm:justify-between">
-          <dl className="flex flex-wrap gap-x-10 gap-y-4">
-            {stats.map((stat) => (
-              <div key={stat.label} className="flex flex-col gap-1">
-                <dt className="order-2 font-mono text-[11px] tracking-[0.15em] text-muted uppercase">
-                  {stat.label}
-                </dt>
-                <dd className="order-1 font-serif text-3xl leading-none">{stat.value}</dd>
-              </div>
-            ))}
-          </dl>
-          <a
-            href="#about"
-            className="inline-flex items-center gap-3 self-start font-mono text-[11px] tracking-[0.15em] text-muted uppercase transition-colors hover:text-foreground sm:self-auto"
-          >
-            Scroll
-            <span className="relative block h-10 w-px overflow-hidden bg-line" aria-hidden>
-              <span className="absolute inset-x-0 top-0 h-1/2 animate-[scroll-hint_1.8s_ease-in-out_infinite] bg-foreground motion-reduce:animate-none" />
+      <div
+        className={`flex items-end justify-between gap-6 pb-3 font-eyebrow text-muted ${gutter}`}
+      >
+        <span>
+          {site.role} — {site.company}
+        </span>
+        <a
+          href="#work"
+          className="hidden items-center gap-2 transition-colors hover:text-foreground sm:inline-flex"
+        >
+          Scroll
+          <ArrowDown className="h-3.5 w-3.5" aria-hidden />
+        </a>
+      </div>
+
+      {/*
+       * The name is the page's largest text and its LCP element. It is sized in
+       * viewport units so it spans the full width: condensed and stacked on narrow
+       * screens, one regular-width line on wide ones (13vw fills the row at 100%
+       * width). The entrance is transform-only (see globals.css).
+       */}
+      <h1 className="px-3 pb-[1.2vw] font-display text-[30vw] text-foreground select-none sm:text-[13vw] sm:[font-stretch:100%]">
+        <span className="sr-only">
+          {site.name}, {site.role}
+        </span>
+        <span aria-hidden className="flex flex-col sm:flex-row sm:justify-between sm:gap-[0.15em]">
+          {[site.firstName, site.lastName].map((word, index) => (
+            <span
+              key={word}
+              className="-my-[0.06em] block overflow-hidden py-[0.06em] last:self-end sm:last:self-auto"
+            >
+              <span
+                className="block animate-line-up motion-reduce:animate-none"
+                style={{ animationDelay: `calc(var(--intro-delay, 0s) + ${0.05 + index * 0.08}s)` }}
+              >
+                {word}
+              </span>
             </span>
-          </a>
-        </div>
-      </Container>
+          ))}
+        </span>
+      </h1>
     </section>
   );
 }

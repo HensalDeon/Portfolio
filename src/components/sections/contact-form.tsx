@@ -4,6 +4,7 @@ import emailjs from "@emailjs/browser";
 import { type FormEvent, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { Magnetic } from "@/components/ui/magnetic";
 import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
 
@@ -30,7 +31,7 @@ function validate(values: Values): Errors {
 }
 
 const fieldClass =
-  "w-full rounded-xl border border-line bg-transparent px-4 py-3 text-sm text-foreground placeholder:text-muted/70 transition-colors focus:border-foreground focus:outline-none aria-[invalid=true]:border-danger";
+  "w-full border-0 border-b border-line bg-transparent px-0 py-3 text-lg text-foreground placeholder:text-foreground/45 transition-[border-color,box-shadow] focus:border-foreground focus:shadow-[inset_0_-1px_0_var(--foreground)] focus:outline-none aria-[invalid=true]:border-danger";
 
 export function ContactForm() {
   const [values, setValues] = useState<Values>({ name: "", email: "", message: "" });
@@ -86,8 +87,8 @@ export function ContactForm() {
   const showError = (field: Field) => touched[field] && errors[field];
 
   return (
-    <form onSubmit={submit} noValidate className="mt-10 flex flex-col gap-5">
-      <div className="grid gap-5 sm:grid-cols-2">
+    <form onSubmit={submit} noValidate className="flex flex-col gap-8">
+      <div className="grid gap-8 sm:grid-cols-2">
         <FieldWrapper id="name" label="Name" error={showError("name")}>
           <input
             id="name"
@@ -123,7 +124,7 @@ export function ContactForm() {
         <textarea
           id="message"
           name="message"
-          rows={6}
+          rows={4}
           placeholder="What are you working on?"
           value={values.message}
           onInput={update("message")}
@@ -134,14 +135,18 @@ export function ContactForm() {
         />
       </FieldWrapper>
 
-      <div className="flex flex-wrap items-center gap-4 pt-1">
-        <Button type="submit" disabled={status === "sending"}>
-          {status === "sending" ? "Sending…" : "Send message"}
-        </Button>
-        <p role="status" aria-live="polite" className="text-sm text-muted">
+      <div className="flex flex-wrap items-center gap-4 pt-2">
+        <Magnetic>
+          <Button type="submit" disabled={status === "sending"} size="lg">
+            {status === "sending" ? "Sending…" : "Send message"}
+          </Button>
+        </Magnetic>
+        <p role="status" aria-live="polite" className="text-sm">
           {status === "sent" && "Thanks, your message is on its way."}
           {status === "error" && (
-            <span className="text-danger">Something went wrong. Email me on LinkedIn instead.</span>
+            <span className="font-medium text-danger">
+              Something went wrong. Message me on LinkedIn instead.
+            </span>
           )}
         </p>
       </div>
@@ -161,13 +166,13 @@ function FieldWrapper({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="font-mono text-[11px] tracking-[0.15em] text-muted uppercase">
+    <div className="flex flex-col gap-1">
+      <label htmlFor={id} className="font-eyebrow">
         {label}
       </label>
       {children}
       {error && (
-        <p id={`${id}-error`} className="text-xs text-danger">
+        <p id={`${id}-error`} className="text-xs font-medium text-danger">
           {error}
         </p>
       )}

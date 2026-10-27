@@ -1,31 +1,5 @@
-// Technologies
-import css from "./tech/css.webp";
-import figma from "./tech/figma.webp";
-import firebase from "./tech/firebase.webp";
-import git from "./tech/git.webp";
-import html from "./tech/html.webp";
-import javascript from "./tech/javascript.webp";
-import mongodb from "./tech/mongodb.webp";
-import nextjs from "./tech/nextjs.webp";
-import nodejs from "./tech/nodejs.webp";
-import reactjs from "./tech/reactjs.webp";
-import redux from "./tech/redux.webp";
-import tailwind from "./tech/tailwind.webp";
-import typescript from "./tech/typescript.webp";
-import threejs from "./tech/threejs.svg";
-import wordpress from "./tech/wordpress.svg";
-import webflow from "./tech/webflow.svg";
-import sass from "./tech/sass.svg";
-import github from "./tech/github.svg";
-import gitlab from "./tech/gitlab.svg";
-import vercel from "./tech/vercel.svg";
-import sanity from "./tech/sanity.svg";
-
-// Companies
-import brototype from "./company/brototype.webp";
-import eightysixmedia from "./company/eightysixmedia.webp";
-import trusttech from "./company/trusttech.webp";
-import webandcrafts from "./company/webandcrafts.webp";
+// About
+import portrait from "./portrait.webp";
 
 // Project screenshots
 import aneco from "./projects/aneco.webp";
@@ -50,31 +24,7 @@ import trsutcapital from "./projects/trsutcapital.webp";
 import wac from "./projects/wac.webp";
 
 export {
-  css,
-  figma,
-  firebase,
-  git,
-  html,
-  javascript,
-  mongodb,
-  nextjs,
-  nodejs,
-  reactjs,
-  redux,
-  tailwind,
-  typescript,
-  threejs,
-  wordpress,
-  webflow,
-  sass,
-  github,
-  gitlab,
-  vercel,
-  sanity,
-  brototype,
-  eightysixmedia,
-  trusttech,
-  webandcrafts,
+  portrait,
   aneco,
   animemaster,
   blockchaincenter,

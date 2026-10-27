@@ -1,23 +1,22 @@
-import { Footer } from "@/components/layout/footer";
-import { Navbar } from "@/components/layout/navbar";
+import { ViewTransition } from "react";
+
 import { About } from "@/components/sections/about";
 import { Contact } from "@/components/sections/contact";
 import { Experience } from "@/components/sections/experience";
 import { Hero } from "@/components/sections/hero";
-import { Projects } from "@/components/sections/projects";
+import { Work } from "@/components/sections/work";
+import { pageTransition } from "@/lib/transitions";
 
 export default function HomePage() {
   return (
-    <>
-      <Navbar />
+    <ViewTransition {...pageTransition}>
       <main id="main">
         <Hero />
+        <Work />
         <About />
         <Experience />
-        <Projects />
         <Contact />
       </main>
-      <Footer />
-    </>
+    </ViewTransition>
   );
 }

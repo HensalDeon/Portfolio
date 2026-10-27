@@ -14,14 +14,14 @@ export default function AppleIcon() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#0b0b0d",
+        background: "#111110",
       }}
     >
       <img
         alt=""
         width={116}
         height={116}
-        src={monogramDataUrl({ foreground: "#f3f2ee", accent: "#9b86ff", strokeWidth: 6 })}
+        src={monogramDataUrl({ foreground: "#efede7", accent: "#ff5a26", strokeWidth: 6 })}
       />
     </div>,
     size,
