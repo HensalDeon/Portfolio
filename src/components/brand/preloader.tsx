@@ -66,7 +66,6 @@ export function Preloader() {
       className="preloader fixed inset-x-0 top-0 z-[100] bg-background text-foreground"
     >
       <div className="preloader-content relative flex h-svh flex-col items-center justify-center gap-7">
-        <div className="hero-glow absolute h-[28rem] w-[28rem] rounded-full" />
         <Monogram className="preloader-mark relative h-24 w-24 sm:h-28 sm:w-28" />
         <p className="relative overflow-hidden font-mono text-[11px] tracking-[0.25em] text-muted uppercase">
           <span className="preloader-line block">{site.name}</span>

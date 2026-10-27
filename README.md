@@ -1,20 +1,20 @@
 # Hensal Deon Portfolio
 
-Personal portfolio built with Next.js 16, React 19, TypeScript, Tailwind CSS 4 and React Three Fiber. Hero, about, experience, a filterable project grid and a contact form backed by EmailJS, behind a branded curtain preloader.
+Personal portfolio built with Next.js 16, React 19, TypeScript, Tailwind CSS 4 and three.js. A bold editorial site: a full-bleed name and particle monogram in the hero, five case studies with their own pages, an archive index with cursor previews, experience and a contact form backed by EmailJS, behind a branded curtain preloader.
 
 ## Stack
 
-| Area      | Choice                                                                      |
-| --------- | --------------------------------------------------------------------------- |
-| Framework | Next.js 16 (App Router, static rendering), React 19                         |
-| Language  | TypeScript, strict mode                                                     |
-| Styling   | Tailwind CSS 4 with CSS variable design tokens                              |
-| Motion    | CSS keyframes and IntersectionObserver-driven reveals, no animation library |
-| 3D        | Three.js, React Three Fiber 9, Drei, Draco compressed glTF                  |
-| Theming   | next-themes, light and dark with system default                             |
-| Fonts     | Geist Sans, Geist Mono, Instrument Serif via `next/font`                    |
-| Tooling   | ESLint 9 flat config, Prettier with Tailwind plugin                         |
-| Hosting   | Netlify, via `@netlify/plugin-nextjs`                                       |
+| Area      | Choice                                                                                            |
+| --------- | ------------------------------------------------------------------------------------------------- |
+| Framework | Next.js 16 (App Router, static rendering), React 19                                               |
+| Language  | TypeScript, strict mode                                                                           |
+| Styling   | Tailwind CSS 4 with CSS variable design tokens                                                    |
+| Motion    | CSS keyframes, scroll timelines, Lenis smooth scroll, React view transitions                      |
+| WebGL     | Plain three.js particle field built from the monogram strokes                                     |
+| Theming   | next-themes, light and dark with system default                                                   |
+| Fonts     | Archivo (variable width) for display and body, Instrument Serif italic accents, Geist Mono labels |
+| Tooling   | ESLint 9 flat config, Prettier with Tailwind plugin                                               |
+| Hosting   | Netlify, via `@netlify/plugin-nextjs`                                                             |
 
 ## Getting started
 
@@ -51,40 +51,31 @@ The site runs at `http://localhost:3000`.
 
 ```
 src/
-├── app/                  # App Router: layout, page, globals.css, OG image, favicon (icon.svg, apple-icon.tsx)
-├── assets/               # Static image imports (typed via next/image), grouped into projects/, tech/, company/
+├── app/                  # App Router: layout, home page, work/[slug] case studies, not-found, globals.css, OG image, icons
+├── assets/               # Project screenshots imported through next/image
 ├── components/
 │   ├── brand/            # HD monogram and the curtain preloader
 │   ├── layout/           # Navbar, theme toggle, footer
-│   ├── sections/         # Hero, about, experience, projects, contact
-│   ├── three/            # React Three Fiber scenes and error boundary
-│   ├── ui/               # Container, buttons, reveal, section heading
-│   └── providers/        # Theme provider
-├── content/              # Typed site content: site.ts, nav.ts, data.ts
-├── hooks/                # useScrolled, useActiveSection, useMounted
-└── lib/                  # Small utilities
-public/
-├── draco/                # Self-hosted Draco decoder for compressed models
-└── models/               # Compressed glTF binaries and their licences
+│   ├── hero/             # Particle monogram (three.js) and its deferred React wrapper
+│   ├── sections/         # Hero, work, archive index, about, experience, contact
+│   ├── ui/               # Container, buttons, reveals, marquee, magnetic, cursor label, project cover
+│   └── providers/        # Theme provider and Lenis smooth scroll
+├── content/              # Typed site content: site.ts, nav.ts, data.ts, work.ts
+├── hooks/                # Scroll, visibility, reduced motion and deferred-scene hooks
+└── lib/                  # Utilities and shared view-transition props
 ```
 
 ## Content
 
-All copy and data lives in `src/content/`. Edit `site.ts` for name, role, tagline and social links, and `data.ts` for services, technologies, experience and projects. Images are imported through `src/assets/index.ts` so they get width, height and blur placeholders automatically. Screenshots are WebP at 1200px wide and icons at 128px, which keeps the whole folder near 1 MB.
+All copy and data lives in `src/content/`. Edit `site.ts` for name, role, location, availability, email and social links; `data.ts` for services, capabilities and experience; and `work.ts` for the featured case studies (each gets a page at `/work/<slug>`, a cover tint and gallery) and the archive list. Setting `site.email` shows it in large type in the contact section. Screenshots are WebP at 1200px wide and are imported through `src/assets/index.ts`.
 
 ## Brand
 
 The mark is a stroke-built HD monogram (`src/components/brand/monogram.tsx`): the H's right leg doubles as the D's spine, with the crossbar in the accent colour. The same strokes drive the favicon (`src/app/icon.svg`, OS-aware light/dark), the Apple touch icon and Open Graph image (both generated with `next/og`), and the curtain preloader (`src/components/brand/preloader.tsx`), which draws the mark in on load before the page is revealed. Hero entrance animations read the `--intro-delay` CSS variable (`src/components/brand/intro.ts`) so they play in step with the curtain lifting.
 
-## 3D models
+## Hero particles
 
-Models in `public/models/` are compressed copies of the Sketchfab originals (Draco geometry, WebP textures capped at 1024px). They were produced with:
-
-```bash
-npx @gltf-transform/cli optimize scene.gltf out.glb --compress draco --texture-compress webp --texture-size 1024
-```
-
-Both models are CC BY 4.0. Attribution is in `public/models/LICENSES.md` and shown in the site footer.
+`src/components/hero/monogram-field.ts` rasterises the monogram strokes, samples a few thousand points from the ink and renders them as a three.js point cloud with a small custom shader. The points assemble when the intro curtain lifts, part around the pointer and dissolve as the hero scrolls away. The SVG mark holds the space until then: the field (and three.js) only loads once the intro has finished and the browser is idle, pauses offscreen, renders a still frame for reduced motion, and is skipped when the user is saving data.
 
 ## Deployment
 

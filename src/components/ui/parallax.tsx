@@ -3,10 +3,12 @@
 import { useEffect, useRef, type ReactNode } from "react";
 
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import { cn } from "@/lib/utils";
 
 type ParallaxProps = {
   children: ReactNode;
   className?: string;
+  innerClassName?: string;
   /** Pixel offset at the start and end of the scroll range. */
   range?: [number, number];
   /**
@@ -26,6 +28,7 @@ type ParallaxProps = {
 export function Parallax({
   children,
   className,
+  innerClassName,
   range = [24, -24],
   offset = "enter-exit",
 }: ParallaxProps) {
@@ -71,7 +74,7 @@ export function Parallax({
 
   return (
     <div ref={outer} className={className}>
-      <div ref={inner} className="will-change-transform">
+      <div ref={inner} className={cn("will-change-transform", innerClassName)}>
         {children}
       </div>
     </div>

@@ -1,20 +1,24 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import { Archivo, Geist_Mono, Instrument_Serif } from "next/font/google";
 import type { CSSProperties, ReactNode } from "react";
 
 import { INTRO_DELAY_S } from "@/components/brand/intro";
 import { Preloader } from "@/components/brand/preloader";
+import { Footer } from "@/components/layout/footer";
+import { Navbar } from "@/components/layout/navbar";
+import { SmoothScroll } from "@/components/providers/smooth-scroll";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { site } from "@/content/site";
 
 import "./globals.css";
 
-const geistSans = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
+// One variable family with its width axis covers condensed display type and body copy.
+const archivo = Archivo({ subsets: ["latin"], variable: "--font-archivo", axes: ["wdth"] });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
   weight: "400",
-  style: ["normal", "italic"],
+  style: "italic",
   variable: "--font-instrument-serif",
 });
 
@@ -37,8 +41,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#faf9f6" },
-    { media: "(prefers-color-scheme: dark)", color: "#0b0b0d" },
+    { media: "(prefers-color-scheme: light)", color: "#f1efe9" },
+    { media: "(prefers-color-scheme: dark)", color: "#0e0e0d" },
   ],
 };
 
@@ -47,11 +51,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable}`}
+      className={`${archivo.variable} ${geistMono.variable} ${instrumentSerif.variable}`}
       style={{ "--intro-delay": `${INTRO_DELAY_S}s` } as CSSProperties}
     >
       <body>
         <ThemeProvider>
+          <SmoothScroll />
           <Preloader />
           <a
             href="#main"
@@ -59,7 +64,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           >
             Skip to content
           </a>
+          <Navbar />
           {children}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

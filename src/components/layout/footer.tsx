@@ -1,36 +1,43 @@
+import { ArrowUp, ArrowUpRight } from "lucide-react";
+
 import { Monogram } from "@/components/brand/monogram";
 import { Container } from "@/components/ui/container";
+import { LocalTime } from "@/components/ui/local-time";
 import { site } from "@/content/site";
-
-const credits = [
-  { label: "Desktop model", author: "Yolala1232", href: "https://sketchfab.com/Yolala1232" },
-  { label: "Planet model", author: "cmzw", href: "https://sketchfab.com/cmzw" },
-];
 
 export function Footer() {
   return (
-    <footer className="border-t border-line py-8">
-      <Container className="flex flex-col gap-3 font-mono text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
-        <p className="flex items-center gap-2.5">
-          <Monogram className="h-5 w-5 text-foreground" />
+    <footer className="surface-ink">
+      <Container className="grid gap-8 py-10 font-eyebrow text-muted sm:grid-cols-2 lg:grid-cols-4 lg:items-center">
+        <p className="flex items-center gap-3 text-foreground">
+          <Monogram className="h-6 w-6" />
           &copy; {new Date().getFullYear()} {site.name}
         </p>
         <p>
-          {credits.map((credit, index) => (
-            <span key={credit.author}>
-              {index > 0 && ", "}
-              {credit.label} by{" "}
+          {site.location} · <LocalTime className="tabular-nums" />
+        </p>
+        <ul className="flex gap-6">
+          {site.socials.map((social) => (
+            <li key={social.label}>
               <a
-                href={credit.href}
+                href={social.href}
                 target="_blank"
                 rel="noreferrer"
-                className="underline decoration-line underline-offset-4 transition-colors hover:text-foreground"
+                className="inline-flex items-center gap-1 transition-colors hover:text-foreground"
               >
-                {credit.author}
+                {social.label}
+                <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
               </a>
-            </span>
+            </li>
           ))}
-        </p>
+        </ul>
+        <a
+          href="#top"
+          className="inline-flex items-center gap-2 transition-colors hover:text-foreground lg:justify-self-end"
+        >
+          Back to top
+          <ArrowUp className="h-3.5 w-3.5" aria-hidden />
+        </a>
       </Container>
     </footer>
   );
