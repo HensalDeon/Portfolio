@@ -1,3 +1,4 @@
+import { Portrait } from "@/components/ui/portrait";
 import { Reveal } from "@/components/ui/reveal";
 import { ScrollWords } from "@/components/ui/scroll-words";
 import { Section } from "@/components/ui/section";
@@ -27,18 +28,13 @@ export function About() {
       />
 
       <div className="mt-20 grid gap-14 sm:mt-28 lg:grid-cols-12 lg:gap-8">
-        <Reveal inView className="lg:col-span-3">
-          <dl className="grid grid-cols-3 gap-6 lg:grid-cols-1 lg:gap-10">
-            {stats.map((stat) => (
-              <div key={stat.label} className="flex flex-col gap-2 border-t border-line pt-4">
-                <dt className="order-2 font-eyebrow text-muted">{stat.label}</dt>
-                <dd className="order-1 font-display text-[clamp(2.75rem,5vw,4.5rem)] tabular-nums">
-                  {stat.value}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </Reveal>
+        <div className="reveal-clip sm:max-w-sm lg:col-span-3 lg:max-w-none">
+          <Portrait image={site.portrait} alt={`Portrait of ${site.name}`} />
+          <p className="mt-3 flex justify-between font-eyebrow text-muted">
+            <span>{site.name}</span>
+            <span>{site.location}</span>
+          </p>
+        </div>
 
         <Reveal inView delay={0.05} className="flex flex-col gap-5 lg:col-span-4 lg:col-start-5">
           <h3 className="font-eyebrow text-muted">Background</h3>
@@ -47,6 +43,16 @@ export function About() {
               {paragraph}
             </p>
           ))}
+          <dl className="mt-6 grid grid-cols-3 gap-6">
+            {stats.map((stat) => (
+              <div key={stat.label} className="flex flex-col gap-2 border-t border-line pt-4">
+                <dt className="order-2 font-eyebrow text-muted">{stat.label}</dt>
+                <dd className="order-1 font-display text-[clamp(2.5rem,4vw,3.75rem)] tabular-nums">
+                  {stat.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </Reveal>
 
         <Reveal inView delay={0.1} className="lg:col-span-4 lg:col-start-9">
