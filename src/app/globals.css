@@ -2,8 +2,13 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-@theme {
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+/*
+ * `inline` makes utilities read the raw custom properties, so a section can
+ * re-theme itself by redefining --background and friends (see the surfaces
+ * below) instead of every colour being frozen at :root.
+ */
+@theme inline {
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-instrument-serif), ui-serif, Georgia, serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
 
@@ -15,52 +20,112 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-danger: var(--danger);
+}
 
+@theme {
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
 }
 
 :root {
-  --background: #faf9f6;
-  --foreground: #121212;
-  --muted: #5f5e5a;
-  --subtle: #f0eee8;
-  --line: #e3e0d8;
-  --accent: #5b3df5;
-  --accent-foreground: #ffffff;
-  --danger: #c93b34;
+  --background: #f1efe9;
+  --foreground: #111110;
+  --muted: #5c5a54;
+  --subtle: #e6e3db;
+  --line: #d6d2c7;
+  /* Darker than the dark-theme accent so large accent type keeps 3:1 on paper. */
+  --accent: #e5400e;
+  --accent-foreground: #111110;
+  --danger: #b4231b;
+  --scroll-dim: #85827a;
   color-scheme: light;
 }
 
 .dark {
-  --background: #0b0b0d;
-  --foreground: #f3f2ee;
-  --muted: #9b9a95;
-  --subtle: #17171b;
-  --line: #26262b;
-  --accent: #9b86ff;
-  --accent-foreground: #0b0b0d;
+  --background: #0e0e0d;
+  --foreground: #efede7;
+  --muted: #9a978f;
+  --subtle: #1a1a18;
+  --line: #2a2926;
+  --accent: #ff5a26;
+  --accent-foreground: #0e0e0d;
+  --danger: #ff7a72;
+  --scroll-dim: #6e6b66;
+  color-scheme: dark;
+}
+
+/* Always-dark band. In dark mode it lifts slightly so it still reads as a surface. */
+.surface-ink {
+  --background: #111110;
+  --foreground: #efede7;
+  --muted: #9a978f;
+  --subtle: #1d1d1b;
+  --line: #2d2c29;
+  --accent: #ff5a26;
   --danger: #ff7a72;
   color-scheme: dark;
 }
 
+.dark .surface-ink {
+  --background: #181816;
+}
+
+/* Signal-orange band. Text stays ink, which keeps 4.5:1 on both accent shades. */
+.surface-accent {
+  --background: #e5400e;
+  --foreground: #111110;
+  --muted: #111110;
+  --subtle: #d63b0c;
+  --line: color-mix(in oklab, #111110 28%, transparent);
+  --accent: #111110;
+  --accent-foreground: #e5400e;
+  --danger: #111110;
+  color-scheme: light;
+}
+
+.dark .surface-accent {
+  --background: #ff5a26;
+  --subtle: #f04f1d;
+  --accent-foreground: #ff5a26;
+}
+
+.surface-ink,
+.surface-accent {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
 @layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-  }
-
   body {
     @apply bg-background font-sans text-foreground antialiased;
+    font-feature-settings: "ss01";
   }
 
   ::selection {
-    background: color-mix(in oklab, var(--accent) 22%, transparent);
+    background: var(--accent);
+    color: var(--accent-foreground);
   }
+}
+
+/*
+ * Condensed, heavy display cut of Archivo. The width axis does the work, so
+ * one variable font covers both the display type and body copy.
+ */
+@utility font-display {
+  font-family: var(--font-sans);
+  font-stretch: 68%;
+  font-weight: 800;
+  line-height: 0.84;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+}
+
+@utility font-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 /*
@@ -82,7 +147,7 @@
   animation: reveal-up 0.8s var(--ease-out-expo) both;
 }
 
-/* Masked line reveal for the hero headline; transform only, same LCP reasoning as above. */
+/* Masked line reveal for display type; transform only, same LCP reasoning as above. */
 @keyframes line-up {
   from {
     transform: translateY(110%);
@@ -93,41 +158,91 @@
 }
 
 @utility animate-line-up {
-  animation: line-up 0.9s var(--ease-out-expo) both;
+  animation: line-up 1.1s var(--ease-out-expo) both;
 }
 
 @keyframes menu-in {
   from {
-    opacity: 0;
-    transform: translateY(-8px);
+    clip-path: inset(0 0 100% 0);
   }
   to {
-    opacity: 1;
-    transform: translateY(0);
+    clip-path: inset(0 0 0 0);
   }
 }
 
 @utility animate-menu-in {
-  animation: menu-in 0.2s ease-out both;
+  animation: menu-in 0.7s var(--ease-in-out-quart) both;
 }
 
-@keyframes scroll-hint {
-  0% {
-    transform: translateY(-100%);
-  }
+@keyframes pulse-dot {
+  0%,
   100% {
-    transform: translateY(200%);
+    box-shadow: 0 0 0 0 color-mix(in oklab, currentColor 45%, transparent);
+  }
+  60% {
+    box-shadow: 0 0 0 6px transparent;
   }
 }
 
-@layer components {
-  .hero-glow {
-    background: radial-gradient(
-      ellipse at center,
-      color-mix(in oklab, var(--accent) 16%, transparent),
-      transparent 65%
-    );
+@utility animate-pulse-dot {
+  animation: pulse-dot 2.4s ease-out infinite;
+}
+
+/* Infinite ticker. The track holds two copies of its content and slides by one. */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
   }
+}
+
+.marquee-track {
+  animation: marquee var(--marquee-duration, 40s) linear infinite;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/*
+ * Images unmask from the bottom as they scroll into view. Driven by a CSS
+ * scroll timeline rather than an observer, so its state is correct on the very
+ * first frame, which keeps view-transition snapshots of it visible. Browsers
+ * without scroll timelines just show the image.
+ */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal-clip {
+      animation: clip-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+  }
+}
+
+@keyframes clip-up {
+  from {
+    clip-path: inset(18% 0 0 0);
+    transform: translateY(48px);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    transform: translateY(0);
+  }
+}
+
+/*
+ * Words light up as a statement scrolls through the viewport. ScrollWords
+ * writes --progress (0 to 1) on the container; each word blends from a dim
+ * tone to full colour once progress has passed its index. The dim tone keeps
+ * 3:1 against the background, so unlit words stay readable as large text. It
+ * defaults to fully lit without JS.
+ */
+.scroll-word {
+  color: color-mix(
+    in oklab,
+    var(--foreground) calc(clamp(0, var(--progress, 1) * var(--count) - var(--index), 1) * 100%),
+    var(--scroll-dim)
+  );
 }
 
 /*
@@ -140,7 +255,7 @@
   height: 112svh;
   border-bottom-left-radius: 50% 10svh;
   border-bottom-right-radius: 50% 10svh;
-  animation: preloader-exit 1s var(--ease-out-expo) var(--intro-delay, 1.85s) both;
+  animation: preloader-exit 1s var(--ease-in-out-quart) var(--intro-delay, 1.85s) both;
   will-change: transform;
 }
 
@@ -202,5 +317,120 @@
   .preloader-mark path {
     animation: none;
     stroke-dashoffset: 0;
+  }
+  .marquee-track {
+    animation: none;
+  }
+  .scroll-word {
+    color: inherit;
+  }
+}
+
+/* Lenis smooth scrolling (mirrors lenis/dist/lenis.css). */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/*
+ * View transitions between the home page and case studies. The project image
+ * morphs between its list and hero positions; the rest of the page slides in
+ * the direction of travel while the header stays put.
+ */
+::view-transition {
+  pointer-events: none;
+}
+
+::view-transition-group(.morph) {
+  animation-duration: 700ms;
+  animation-timing-function: var(--ease-in-out-quart);
+}
+
+::view-transition-image-pair(.morph) {
+  animation-name: via-blur;
+}
+
+@keyframes via-blur {
+  30% {
+    filter: blur(2px);
+  }
+}
+
+::view-transition-old(.nav-forward) {
+  --slide-offset: -80px;
+  animation:
+    180ms ease-in both vt-fade reverse,
+    500ms var(--ease-in-out-quart) both vt-slide reverse;
+}
+::view-transition-new(.nav-forward) {
+  --slide-offset: 80px;
+  animation:
+    260ms ease-out 180ms both vt-fade,
+    500ms var(--ease-in-out-quart) both vt-slide;
+}
+::view-transition-old(.nav-back) {
+  --slide-offset: 80px;
+  animation:
+    180ms ease-in both vt-fade reverse,
+    500ms var(--ease-in-out-quart) both vt-slide reverse;
+}
+::view-transition-new(.nav-back) {
+  --slide-offset: -80px;
+  animation:
+    260ms ease-out 180ms both vt-fade,
+    500ms var(--ease-in-out-quart) both vt-slide;
+}
+
+@keyframes vt-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes vt-slide {
+  from {
+    translate: 0 var(--slide-offset);
+  }
+  to {
+    translate: 0 0;
+  }
+}
+
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(site-header) {
+  display: none;
+}
+::view-transition-new(site-header) {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
   }
 }

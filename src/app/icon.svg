@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="#121212" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="#111110" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
   <style>
-    .accent { stroke: #5b3df5; }
+    .accent { stroke: #e5400e; }
     @media (prefers-color-scheme: dark) {
-      svg { stroke: #f3f2ee; }
-      .accent { stroke: #9b86ff; }
+      svg { stroke: #efede7; }
+      .accent { stroke: #ff5a26; }
     }
   </style>
   <path d="M9 11V53"/>

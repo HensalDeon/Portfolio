@@ -11,11 +11,7 @@ type SectionProps = Omit<ComponentProps<"section">, "id"> & {
 
 export function Section({ id, className, containerClassName, children, ...props }: SectionProps) {
   return (
-    <section
-      id={id}
-      className={cn("scroll-mt-20 border-t border-line py-24 sm:py-32", className)}
-      {...props}
-    >
+    <section id={id} className={cn("py-24 sm:py-36", className)} {...props}>
       <Container className={containerClassName}>{children}</Container>
     </section>
   );
