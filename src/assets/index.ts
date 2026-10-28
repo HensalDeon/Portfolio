@@ -7,6 +7,7 @@ import animemaster from "./projects/animemaster.webp";
 import blockchaincenter from "./projects/blockchaincenter.webp";
 import buzzgram from "./projects/buzzgram.webp";
 import customcreation from "./projects/customcreation.webp";
+import designcove from "./projects/designcove.webp";
 import ecwrd from "./projects/ecwrd.webp";
 import familysub from "./projects/familysub.webp";
 import giftcards from "./projects/giftcards.webp";
@@ -31,6 +32,7 @@ export {
   blockchaincenter,
   buzzgram,
   customcreation,
+  designcove,
   ecwrd,
   familysub,
   giftcards,
@@ -46,5 +48,5 @@ export {
   traction,
   trsutcapital,
   wac,
-  f8
+  f8,
 };

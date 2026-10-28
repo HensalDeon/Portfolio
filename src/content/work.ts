@@ -4,6 +4,7 @@ import {
   blockchaincenter,
   buzzgram,
   customcreation,
+  designcove,
   ecwrd,
   f8,
   familysub,
@@ -208,6 +209,14 @@ export const caseStudies: CaseStudy[] = [
 ];
 
 export const archive: ArchiveProject[] = [
+  {
+    name: "DesignCove Architects",
+    platform: "Next.js",
+    kind: "Architecture and interiors studio",
+    tags: ["Next.js", "Sanity", "TypeScript"],
+    image: designcove,
+    href: "https://designcovearchitects.vercel.app/",
+  },
   {
     name: "ECWRD",
     platform: "Other",
