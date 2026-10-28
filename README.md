@@ -43,9 +43,17 @@ The site runs at `http://localhost:3000`.
 | Variable                          | Purpose                                        |
 | --------------------------------- | ---------------------------------------------- |
 | `NEXT_PUBLIC_SITE_URL`            | Canonical URL used for metadata and Open Graph |
+| `GOOGLE_SITE_VERIFICATION`        | Optional Search Console verification token     |
 | `NEXT_PUBLIC_EMAILJS_SERVICE_ID`  | EmailJS service for the contact form           |
 | `NEXT_PUBLIC_EMAILJS_TEMPLATE_ID` | EmailJS template for the contact form          |
 | `NEXT_PUBLIC_EMAILJS_PUBLIC_KEY`  | EmailJS public key                             |
+
+## SEO
+
+- Metadata in `src/app/layout.tsx` (canonical URLs, Open Graph profile, Twitter card, robots directives) and per case study in `src/app/work/[slug]/page.tsx`
+- `robots.txt`, `sitemap.xml` and the web manifest are generated from `src/app/robots.ts`, `sitemap.ts` and `manifest.ts`
+- JSON-LD from `src/lib/json-ld.tsx`: Person, WebSite and ProfilePage on the home page; CreativeWork and BreadcrumbList on each case study
+- Branded social cards for the home page and every case study, drawn by `src/lib/og-card.tsx`
 
 ## Project structure
 
@@ -79,7 +87,7 @@ The mark is a stroke-built HD monogram (`src/components/brand/monogram.tsx`): th
 
 ## Deployment
 
-Deployed to Netlify via `@netlify/plugin-nextjs` (configured in `netlify.toml`); any Next.js host works otherwise, and Vercel needs no configuration. Set `NEXT_PUBLIC_SITE_URL` to the production domain so Open Graph URLs resolve correctly.
+Deployed to Netlify via `@netlify/plugin-nextjs` (configured in `netlify.toml`); any Next.js host works otherwise, and Vercel needs no configuration. Canonical, Open Graph, sitemap and structured-data URLs use `NEXT_PUBLIC_SITE_URL`, falling back to the `URL` Netlify sets to the site's primary domain at build time.
 
 ## Contact
 
