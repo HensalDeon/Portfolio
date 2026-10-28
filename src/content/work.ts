@@ -4,7 +4,9 @@ import {
   blockchaincenter,
   buzzgram,
   customcreation,
+  designcove,
   ecwrd,
+  f8,
   familysub,
   giftcards,
   goodseoul,
@@ -208,12 +210,28 @@ export const caseStudies: CaseStudy[] = [
 
 export const archive: ArchiveProject[] = [
   {
+    name: "DesignCove Architects",
+    platform: "Next.js",
+    kind: "Architecture and interiors studio",
+    tags: ["Next.js", "Sanity", "TypeScript"],
+    image: designcove,
+    href: "https://designcovearchitects.vercel.app/",
+  },
+  {
     name: "ECWRD",
     platform: "Other",
     kind: "Workforce development council",
     tags: ["WordPress", "Tailwind CSS"],
     image: ecwrd,
     href: "https://ecwrd.ae/",
+  },
+  {
+    name: "Function8",
+    platform: "Next.js",
+    kind: "Branding agency",
+    tags: ["Next.js", "TypeScript"],
+    image: f8,
+    href: "https://www.f8ad.in/",
   },
   {
     name: "MGPS",
