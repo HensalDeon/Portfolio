@@ -7,7 +7,9 @@ import { ViewTransition } from "react";
 import { Container } from "@/components/ui/container";
 import { ProjectCover } from "@/components/ui/project-cover";
 import { Reveal } from "@/components/ui/reveal";
+import { site } from "@/content/site";
 import { caseStudies, getCaseStudy } from "@/content/work";
+import { caseStudyJsonLd, JsonLd } from "@/lib/json-ld";
 import { pageTransition } from "@/lib/transitions";
 
 export const dynamicParams = false;
@@ -20,10 +22,28 @@ export async function generateMetadata({ params }: PageProps<"/work/[slug]">): P
   const { slug } = await params;
   const study = getCaseStudy(slug);
   if (!study) return {};
+  const title = `${study.client} case study`;
+  const url = `/work/${study.slug}`;
+  // Nested openGraph and twitter objects replace the layout's rather than merge, so they are restated in full.
   return {
-    title: study.client,
+    title,
     description: study.summary,
-    openGraph: { title: study.client, description: study.summary, images: [study.cover.src] },
+    alternates: { canonical: url },
+    openGraph: {
+      type: "article",
+      url,
+      title: `${title} · ${site.name}`,
+      description: study.summary,
+      siteName: site.name,
+      locale: "en_US",
+      authors: [site.name],
+      tags: [...study.services, ...study.stack],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} · ${site.name}`,
+      description: study.summary,
+    },
   };
 }
 
@@ -45,6 +65,7 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
   return (
     <ViewTransition {...pageTransition}>
       <main id="main">
+        <JsonLd data={caseStudyJsonLd(study)} />
         <article id="top">
           <Container className="pt-28 lg:pt-36">
             <div className="flex items-center justify-between font-eyebrow text-muted">

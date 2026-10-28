@@ -28,15 +28,32 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: { default: title, template: `%s · ${site.name}` },
   description: site.description,
+  applicationName: site.name,
+  authors: [{ name: site.name, url: site.url }],
+  creator: site.name,
+  category: "technology",
+  alternates: { canonical: "/" },
   openGraph: {
-    type: "website",
-    url: site.url,
+    type: "profile",
+    url: "/",
     title,
     description: site.description,
     siteName: site.name,
+    locale: "en_US",
+    firstName: site.firstName,
+    lastName: site.lastName,
   },
   twitter: { card: "summary_large_image", title, description: site.description },
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+  },
+  formatDetection: { telephone: false, email: false, address: false },
+  // Search Console ownership token, when one is configured for the deploy.
+  ...(process.env.GOOGLE_SITE_VERIFICATION && {
+    verification: { google: process.env.GOOGLE_SITE_VERIFICATION },
+  }),
 };
 
 export const viewport: Viewport = {

@@ -8,7 +8,15 @@ export const site = {
   lastName: "Deon",
   role: "Senior Web Developer",
   company: "Eighty Six Media",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  /**
+   * Canonical origin for metadata, the sitemap and structured data. Netlify
+   * sets URL to the site's primary domain at build time, so this only needs
+   * overriding to use a different domain. Read on the server only.
+   */
+  url: (process.env.NEXT_PUBLIC_SITE_URL || process.env.URL || "http://localhost:3000").replace(
+    /\/$/,
+    "",
+  ),
   tagline: "Fast, memorable websites for brands around the world.",
   description:
     "Hensal Deon is a senior web developer building marketing sites and web products with Next.js, Webflow and headless CMS platforms.",
