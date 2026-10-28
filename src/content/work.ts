@@ -5,6 +5,7 @@ import {
   buzzgram,
   customcreation,
   ecwrd,
+  f8,
   familysub,
   giftcards,
   goodseoul,
@@ -214,6 +215,14 @@ export const archive: ArchiveProject[] = [
     tags: ["WordPress", "Tailwind CSS"],
     image: ecwrd,
     href: "https://ecwrd.ae/",
+  },
+  {
+    name: "Function8",
+    platform: "Next.js",
+    kind: "Branding agency",
+    tags: ["Next.js", "TypeScript"],
+    image: f8,
+    href: "https://www.f8ad.in/",
   },
   {
     name: "MGPS",

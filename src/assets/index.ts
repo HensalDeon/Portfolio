@@ -22,6 +22,7 @@ import sssl from "./projects/sssl.webp";
 import traction from "./projects/traction.webp";
 import trsutcapital from "./projects/trsutcapital.webp";
 import wac from "./projects/wac.webp";
+import f8 from "./projects/f8.webp";
 
 export {
   portrait,
@@ -45,4 +46,5 @@ export {
   traction,
   trsutcapital,
   wac,
+  f8
 };
